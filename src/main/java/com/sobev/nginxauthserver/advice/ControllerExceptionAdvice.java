@@ -37,19 +37,21 @@ public class ControllerExceptionAdvice {
         
         //业务异常
         if (e instanceof AuthException){
-            response.setStatus(HttpStatus.NON_AUTHORITATIVE_INFORMATION.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.fail(((AuthException)e).code, e.getMessage(), ((AuthException)e).data);
         }
         //请求异常
         if (e instanceof RequestException){
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.requestError(e.getMessage());
         }
         // json参数 格式异常
         if(e instanceof org.springframework.http.converter.HttpMessageNotReadableException){
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.requestError("json参数格式不正确");
         }
         else{
-            response.setStatus(HttpStatus.NON_AUTHORITATIVE_INFORMATION.value());
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.fail(500, e.getMessage(), "null");
         }
 

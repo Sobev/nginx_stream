@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 public class JwtUtils {
 
+    @Autowired
     JwtProperties jwtProperties;
 
     public JwtUtils(){
@@ -65,5 +66,24 @@ public class JwtUtils {
 
     public String getKey(){
         return jwtProperties.getKey();
+    }
+
+    public static void main(String[] args) {
+        try{
+            String compact = Jwts.builder()
+                    .setSubject("123456") // user id from db
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(new Date().getTime() + 86400000L))
+                    .signWith(SignatureAlgorithm.HS512, "926D96C90030DD58429D2751AC1BDBBC")
+                    .compact();
+            System.out.println("compact = " + compact);
+            Jwts.parser()
+                .setSigningKey("926D96C90030DD58429D2751AC1BDBBC")
+                .parseClaimsJws(compact);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
