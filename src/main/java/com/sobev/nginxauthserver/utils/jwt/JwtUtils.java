@@ -13,35 +13,34 @@ public class JwtUtils {
     @Autowired
     JwtProperties jwtProperties;
 
-    public JwtUtils(){
+    public JwtUtils() {
 
     }
 
-    public JwtUtils(JwtProperties jwtProperties){
+    public JwtUtils(JwtProperties jwtProperties) {
         this.jwtProperties = jwtProperties;
     }
 
-    public String createToken(){
+    public String createToken() {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtProperties.getExpiration());
         return Jwts.builder()
                 .setSubject("Sobev") // user id from db
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512,jwtProperties.getKey())
+                .signWith(SignatureAlgorithm.HS512, jwtProperties.getKey())
                 .compact();
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try {
             Jwts.parser()
                     .setSigningKey(jwtProperties.getKey())
                     .parseClaimsJws(token);
             return true;
-        }catch (SignatureException ex){
+        } catch (SignatureException ex) {
             System.out.println("Invalid JWT signature");
-        }
-        catch (MalformedJwtException ex) {
+        } catch (MalformedJwtException ex) {
             System.out.println("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
             System.out.println("Expired JWT token");
@@ -52,7 +51,8 @@ public class JwtUtils {
         }
         return false;
     }
-    public String getUserIdFromJToken(String token){
+
+    public String getUserIdFromJToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtProperties.getKey())
                 .parseClaimsJws(token)
@@ -60,16 +60,16 @@ public class JwtUtils {
         return (claims.getSubject());
     }
 
-    public String getToken(){
+    public String getToken() {
         return createToken();
     }
 
-    public String getKey(){
+    public String getKey() {
         return jwtProperties.getKey();
     }
 
     public static void main(String[] args) {
-        try{
+        try {
             String compact = Jwts.builder()
                     .setSubject("123456") // user id from db
                     .setIssuedAt(new Date())
@@ -78,10 +78,10 @@ public class JwtUtils {
                     .compact();
             System.out.println("compact = " + compact);
             Jwts.parser()
-                .setSigningKey("926D96C90030DD58429D2751AC1BDBBC")
-                .parseClaimsJws(compact);
+                    .setSigningKey("926D96C90030DD58429D2751AC1BDBBC")
+                    .parseClaimsJws(compact);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

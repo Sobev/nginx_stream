@@ -1,12 +1,11 @@
 package com.sobev.nginxauthserver.common.exception;
 
 /**
-* @author luojx
-* @date 2021/10/17 14:44
-* @desc 自定义业务异常 这类异常的信息可以直接展示给用户，如用户名已存在
-*
-*/
-public class AuthException extends RuntimeException{
+ * @author luojx
+ * @date 2021/10/17 14:44
+ * @desc 自定义业务异常 这类异常的信息可以直接展示给用户，如用户名已存在
+ */
+public class AuthException extends RuntimeException {
     private static final long serialVersionUID = 8687206806741845617L;
 
     /**
@@ -19,16 +18,16 @@ public class AuthException extends RuntimeException{
      */
     public Object data;
 
-    public AuthException(String msg){
+    public AuthException(String msg) {
         super(msg);
     }
 
-    public AuthException(int code, String msg){
+    public AuthException(int code, String msg) {
         super(msg);
         this.code = code;
     }
 
-    public AuthException(int code, String msg, Object data){
+    public AuthException(int code, String msg, Object data) {
         super(msg);
         this.code = code;
         this.data = data;

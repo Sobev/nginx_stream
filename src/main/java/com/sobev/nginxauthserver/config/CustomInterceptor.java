@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,18 +31,18 @@ public class CustomInterceptor implements HandlerInterceptor {
         response.setContentType("application/json; charset=utf-8");
         PrintWriter writer = null;
         Optional<Cookie> authorization = CookieUtils.getCookie(request, "Authorization");
-        if(!authorization.isPresent()){
+        if (!authorization.isPresent()) {
             writer = response.getWriter();
             writer.println("Please Login!");
-            response.sendError(500,"Please Login!");
+            response.sendError(500, "Please Login!");
             return false;
         }
         jwtUtils.setJwtProperties(jwtProperties);
         logger.info(authorization.get().getValue());
         String value = authorization.get().getValue();
         boolean validate = jwtUtils.validateToken(value);
-        if(!validate){
-            response.sendError(500,"Error LoginControllerExceptionAdvice!");
+        if (!validate) {
+            response.sendError(500, "Error LoginControllerExceptionAdvice!");
             writer = response.getWriter();
             writer.println("Please Login!");
             throw new AuthException("Auth validate error");

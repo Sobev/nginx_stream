@@ -22,12 +22,12 @@ public class AuthController {
 
     @RequestMapping(value = "/stream/auth")
     @ResponseBody
-    public ResponseData<String> play(@RequestParam("auth_key") String auth_key, HttpServletResponse response){
+    public ResponseData<String> play(@RequestParam("auth_key") String auth_key, HttpServletResponse response) {
         auth_key = auth_key.substring(1);
         logger.info(auth_key);
         boolean validate = jwtUtils.validateToken(auth_key);
         //expire error or jwt format exception
-        if(!validate){
+        if (!validate) {
             //set 203 no NON_AUTHORITATIVE_INFORMATION
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.error("Validation Error");

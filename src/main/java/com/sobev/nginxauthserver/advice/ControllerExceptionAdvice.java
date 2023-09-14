@@ -25,6 +25,7 @@ public class ControllerExceptionAdvice {
 
     /**
      * 异常捕获 统一处理
+     *
      * @param e
      * @return
      */
@@ -32,25 +33,24 @@ public class ControllerExceptionAdvice {
     @org.springframework.web.bind.annotation.ExceptionHandler({Exception.class})
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR) //设置http响应的状态码为500 表示服务端错误
     public ResponseData<Object> handleException(Exception e, HttpServletRequest request, HttpServletResponse response) {
-    	
-        logger.error( "Business::Controller uri:{}统一捕获异常=>:", request.getRequestURI(), e);
-        
+
+        logger.error("Business::Controller uri:{}统一捕获异常=>:", request.getRequestURI(), e);
+
         //业务异常
-        if (e instanceof AuthException){
+        if (e instanceof AuthException) {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            return ResponseData.fail(((AuthException)e).code, e.getMessage(), ((AuthException)e).data);
+            return ResponseData.fail(((AuthException) e).code, e.getMessage(), ((AuthException) e).data);
         }
         //请求异常
-        if (e instanceof RequestException){
+        if (e instanceof RequestException) {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.requestError(e.getMessage());
         }
         // json参数 格式异常
-        if(e instanceof org.springframework.http.converter.HttpMessageNotReadableException){
+        if (e instanceof org.springframework.http.converter.HttpMessageNotReadableException) {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.requestError("json参数格式不正确");
-        }
-        else{
+        } else {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseData.fail(500, e.getMessage(), "null");
         }

@@ -13,12 +13,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private static final long MAX_AGE_SECS = 3600;
 
     @Bean
-    public CustomInterceptor customInterceptor(){
+    public CustomInterceptor customInterceptor() {
         return new CustomInterceptor();
     }
 
     @Bean
-    public JwtUtils jwtUtils(){
+    public JwtUtils jwtUtils() {
         return new JwtUtils();
     }
 
@@ -32,7 +32,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowCredentials(true)
                 .allowedHeaders("*")
-                .allowedMethods("GET","POST","DELETE","PUT","OPTIONS")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
                 .allowedOriginPatterns("*")//使用allowedOriginPatterns不要用allowedOrigin否则SpringBoot报错
                 .maxAge(MAX_AGE_SECS);
     }

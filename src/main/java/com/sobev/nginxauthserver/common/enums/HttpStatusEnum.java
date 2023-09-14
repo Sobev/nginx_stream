@@ -27,7 +27,7 @@ public enum HttpStatusEnum {
 
     private String msg; //提示信息
 
-    HttpStatusEnum(int code, String msg){
+    HttpStatusEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
